@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Content Planner - Side Hustler</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🎬 YouTube Content Planner</h1>
+                <p>Plan, organize, and track your YouTube content effortlessly</p>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="ideas">💡 Ideas</button>
+            <button class="tab-btn" data-tab="calendar">📅 Calendar</button>
+            <button class="tab-btn" data-tab="checklist">✅ Checklist</button>
+            <button class="tab-btn" data-tab="tracking">📊 Tracking</button>
+            <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- IDEAS TAB -->
+            <section id="ideas" class="tab-content active">
+                <div class="tab-header">
+                    <h2>Video Ideas</h2>
+                    <button class="btn btn-primary" id="addIdeaBtn">+ Add Idea</button>
+                </div>
+
+                <!-- Idea Generator -->
+                <div class="idea-generator">
+                    <h3>💡 Idea Generator</h3>
+                    <div class="generator-controls">
+                        <select id="categorySelect">
+                            <option value="">Select a category...</option>
+                            <option value="story">📖 Story/Experience</option>
+                            <option value="problem">❌ Daily Problem</option>
+                            <option value="solution">✨ Solution/Tip</option>
+                            <option value="advice">💬 Advice</option>
+                            <option value="interview">🎙️ Interview</option>
+                            <option value="technical">💻 Technical</option>
+                            <option value="career">🚀 Career</option>
+                        </select>
+                        <button class="btn btn-secondary" id="generateBtn">Generate Ideas</button>
+                    </div>
+                    <div id="generatedIdeas" class="generated-ideas"></div>
+                </div>
+
+                <!-- Add Idea Form -->
+                <div id="ideaForm" class="modal hidden">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h3>Add New Video Idea</h3>
+                        <form id="ideaFormElement">
+                            <input type="text" id="ideaTitle" placeholder="Video Title" required>
+                            <textarea id="ideaDescription" placeholder="Description/Outline"></textarea>
+                            <select id="ideaCategory">
+                                <option value="">Select Category</option>
+                                <option value="story">📖 Story/Experience</option>
+                                <option value="problem">❌ Daily Problem</option>
+                                <option value="solution">✨ Solution/Tip</option>
+                                <option value="advice">💬 Advice</option>
+                                <option value="interview">🎙️ Interview</option>
+                                <option value="technical">💻 Technical</option>
+                                <option value="career">🚀 Career</option>
+                            </select>
+                            <select id="ideaDuration">
+                                <option value="short">⏱️ Short (3-5 min)</option>
+                                <option value="medium">📺 Medium (6-10 min)</option>
+                                <option value="long">🎬 Long (10+ min)</option>
+                            </select>
+                            <textarea id="ideaTags" placeholder="Tags (comma separated)"></textarea>
+                            <button type="submit" class="btn btn-primary">Save Idea</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Ideas List -->
+                <div class="ideas-container">
+                    <div class="filter-bar">
+                        <input type="text" id="searchIdeas" placeholder="Search ideas..." class="search-input">
+                        <select id="filterCategory">
+                            <option value="">All Categories</option>
+                            <option value="story">📖 Story/Experience</option>
+                            <option value="problem">❌ Daily Problem</option>
+                            <option value="solution">✨ Solution/Tip</option>
+                            <option value="advice">💬 Advice</option>
+                            <option value="interview">🎙️ Interview</option>
+                            <option value="technical">💻 Technical</option>
+                            <option value="career">🚀 Career</option>
+                        </select>
+                        <select id="filterStatus">
+                            <option value="">All Status</option>
+                            <option value="draft">Draft</option>
+                            <option value="planned">Planned</option>
+                            <option value="recording">Recording</option>
+                            <option value="editing">Editing</option>
+                            <option value="published">Published</option>
+                        </select>
+                    </div>
+                    <div id="ideasList" class="ideas-list"></div>
+                </div>
+            </section>
+
+            <!-- CALENDAR TAB -->
+            <section id="calendar" class="tab-content">
+                <div class="tab-header">
+                    <h2>Content Calendar</h2>
+                    <button class="btn btn-primary" id="scheduleVideoBtn">📅 Schedule Video</button>
+                </div>
+
+                <!-- Calendar Stats -->
+                <div class="calendar-stats">
+                    <div class="stat-card">
+                        <span class="stat-label">Videos This Week</span>
+                        <span class="stat-value" id="videosThisWeek">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Videos This Month</span>
+                        <span class="stat-value" id="videosThisMonth">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Upcoming</span>
+                        <span class="stat-value" id="upcomingCount">0</span>
+                    </div>
+                </div>
+
+                <!-- Schedule Form -->
+                <div id="scheduleForm" class="modal hidden">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h3>Schedule Video Upload</h3>
+                        <form id="scheduleFormElement">
+                            <select id="scheduleVideoId" required>
+                                <option value="">Select a video idea...</option>
+                            </select>
+                            <label>Upload Date & Time</label>
+                            <input type="datetime-local" id="uploadDateTime" required>
+                            <label>Day of Week</label>
+                            <select id="scheduleDayOfWeek">
+                                <option value="">Preferred day...</option>
+                                <option value="Monday">📅 Monday</option>
+                                <option value="Wednesday">📅 Wednesday</option>
+                                <option value="Friday">📅 Friday</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">Schedule</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Calendar View -->
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button class="btn btn-sm" id="prevMonth">&lt;</button>
+                        <h3 id="currentMonth"></h3>
+                        <button class="btn btn-sm" id="nextMonth">&gt;</button>
+                    </div>
+                    <div id="calendarGrid" class="calendar-grid"></div>
+                </div>
+
+                <!-- Upcoming Videos -->
+                <div class="upcoming-section">
+                    <h3>📹 Upcoming Videos</h3>
+                    <div id="upcomingList" class="upcoming-list"></div>
+                </div>
+            </section>
+
+            <!-- CHECKLIST TAB -->
+            <section id="checklist" class="tab-content">
+                <div class="tab-header">
+                    <h2>Pre-Upload Checklist</h2>
+                    <button class="btn btn-primary" id="newChecklistBtn">+ New Checklist</button>
+                </div>
+
+                <!-- Checklist Template -->
+                <div class="checklist-templates">
+                    <h3>Quick Start Templates</h3>
+                    <div class="template-buttons">
+                        <button class="btn btn-template" data-template="standard">Standard Video</button>
+                        <button class="btn btn-template" data-template="short">Short Video (Nutshell)</button>
+                        <button class="btn btn-template" data-template="story">Story/Experience</button>
+                        <button class="btn btn-template" data-template="interview">Interview</button>
+                    </div>
+                </div>
+
+                <!-- Active Checklists -->
+                <div id="checklistsContainer" class="checklists-container"></div>
+
+                <!-- New Checklist Form -->
+                <div id="checklistForm" class="modal hidden">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h3>Create New Checklist</h3>
+                        <form id="checklistFormElement">
+                            <input type="text" id="checklistName" placeholder="Checklist Name (e.g., Video Title)" required>
+                            <textarea id="checklistItems" placeholder="Checklist items (one per line)&#10;Script written&#10;Audio recorded&#10;Edited&#10;Thumbnail created&#10;SEO optimized&#10;Scheduled"></textarea>
+                            <button type="submit" class="btn btn-primary">Create Checklist</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TRACKING TAB -->
+            <section id="tracking" class="tab-content">
+                <div class="tab-header">
+                    <h2>Performance Tracking</h2>
+                    <button class="btn btn-primary" id="addMetricBtn">+ Add Metric</button>
+                </div>
+
+                <!-- Channel Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card-large">
+                        <span class="stat-label">Total Subscribers</span>
+                        <span class="stat-value" id="totalSubs">0</span>
+                        <input type="number" class="stat-input" id="subsInput" placeholder="Update...">
+                    </div>
+                    <div class="stat-card-large">
+                        <span class="stat-label">Total Views</span>
+                        <span class="stat-value" id="totalViews">0</span>
+                        <input type="number" class="stat-input" id="viewsInput" placeholder="Update...">
+                    </div>
+                    <div class="stat-card-large">
+                        <span class="stat-label">Watch Hours</span>
+                        <span class="stat-value" id="totalWatchHours">0</span>
+                        <input type="number" class="stat-input" id="watchHoursInput" placeholder="Update...">
+                    </div>
+                    <div class="stat-card-large">
+                        <span class="stat-label">Avg. View Duration</span>
+                        <span class="stat-value" id="avgDuration">0%</span>
+                        <input type="number" class="stat-input" id="durationInput" placeholder="Update...">
+                    </div>
+                </div>
+
+                <!-- Video Performance -->
+                <div class="performance-section">
+                    <h3>📊 Video Performance</h3>
+                    <div class="metric-form">
+                        <select id="videoMetricSelect">
+                            <option value="">Select a published video...</option>
+                        </select>
+                        <input type="number" placeholder="Views" id="videoViews">
+                        <input type="number" placeholder="Likes" id="videoLikes">
+                        <input type="number" placeholder="Comments" id="videoComments">
+                        <input type="number" placeholder="Watch Hours" id="videoWatchHours">
+                        <button class="btn btn-secondary" id="saveMetricBtn">Save Metric</button>
+                    </div>
+                    <div id="performanceList" class="performance-list"></div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-section">
+                    <h3>📈 Growth Chart</h3>
+                    <canvas id="growthChart"></canvas>
+                </div>
+            </section>
+
+            <!-- SETTINGS TAB -->
+            <section id="settings" class="tab-content">
+                <div class="tab-header">
+                    <h2>Settings</h2>
+                </div>
+
+                <div class="settings-form">
+                    <div class="setting-group">
+                        <label>Channel Name</label>
+                        <input type="text" id="channelName" placeholder="Your Channel Name">
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Upload Schedule (Days per week)</label>
+                        <div class="day-selector">
+                            <label><input type="checkbox" value="Monday"> Monday</label>
+                            <label><input type="checkbox" value="Wednesday"> Wednesday</label>
+                            <label><input type="checkbox" value="Friday"> Friday</label>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Target Metrics</label>
+                        <input type="number" id="targetSubs" placeholder="Target Subscribers">
+                        <input type="number" id="targetViews" placeholder="Target Views">
+                        <input type="number" id="targetWatchHours" placeholder="Target Watch Hours">
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Video Default Duration</label>
+                        <select id="defaultDuration">
+                            <option value="short">Short (3-5 min)</option>
+                            <option value="medium" selected>Medium (6-10 min)</option>
+                            <option value="long">Long (10+ min)</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Export/Import Data</label>
+                        <button class="btn btn-secondary" id="exportBtn">📥 Export Data (JSON)</button>
+                        <button class="btn btn-secondary" id="importBtn">📤 Import Data</button>
+                        <input type="file" id="importFile" accept=".json" style="display:none;">
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Danger Zone</label>
+                        <button class="btn btn-danger" id="clearAllBtn">🗑️ Clear All Data</button>
+                    </div>
+
+                    <button class="btn btn-primary" id="saveSettingsBtn">💾 Save Settings</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
